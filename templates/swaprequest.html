@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+    * {
+      box-sizing: border-box;
+    }
+    
+    #myInput {
+      background-image: url('/css/searchicon.png');
+      background-position: 10px 10px;
+      background-repeat: no-repeat;
+      width: 100%;
+      font-size: 16px;
+      padding: 12px 20px 12px 40px;
+      border: 1px solid #ddd;
+      margin-bottom: 12px;
+    }
+    
+    #myTable {
+      border-collapse: collapse;
+      width: 100%;
+      border: 1px solid #ddd;
+      font-size: 18px;
+    }
+    
+    #myTable th, #myTable td {
+      text-align: left;
+      padding: 12px;
+    }
+    
+    #myTable tr {
+      border-bottom: 1px solid #ddd;
+    }
+    
+    #myTable tr.header, #myTable tr:hover {
+      background-color: #f1f1f1;
+    }
+
+    body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.topnav {
+  overflow: hidden;
+  background-color: #333;
+}
+
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.topnav a:hover {
+  background-color: #ddd;
+  color:black;
+}
+
+.topnav a.active {
+  background-color: #4CAF50;
+  color: white;
+}
+
+    </style>
+</head>
+
+<body>
+
+  
+ <div class="topnav">
+    <a  href="/">Home</a>
+    <a class="active" 
+    {% if not isadmin %}
+    href="/swaprequest">Section Swap</a>
+    {% endif %}
+    <a href="/logout">Logout</a> 
+ </div>
+
+<h1>Swap sections  </h1> 
+
+
+<form action="/request" method="POST"> 
+ <label>section to drop:</label> 
+  <select name="sectiontodrop" id="sectiontodrop">
+    {% for row in data %}
+    <option  >{{row['SECID']}}</option>    
+    {% endfor %}
+  </select>
+  
+  <label>&nbsp;&nbsp;&nbsp;&nbsp; section to join:</label> 
+  <select name="sectiontojoin" id="sectiontojoin">
+    {% for row in data2 %}
+    <option  > {{row['SECID']}} </option>    
+    {% endfor %}
+  </select>
+  
+  <br>
+  <input type="submit" value="request a swap">
+</form>
+
+
+
+ <div class="out">
+  {{info|safe}}
+ </div>
+
+ {%  if   pending %}
+ <p>Pending requests:</p>
+ <div class="pending">
+     {{pending|safe}}
+     <form action="/cancel" method="POST">
+        <input type="submit" value="cancel">
+      </form>          
+ </div>
+
+ {%  endif  %}
+
+
+
+ 
+
+</body>
+</html>

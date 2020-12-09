@@ -1,0 +1,11 @@
+{
+    "terminal.integrated.automationShell.linux": "",
+    "terminal.integrated.cwd": "/home/gilsh/study/sectionswap",
+    "terminal.integrated.shellArgs.linux": [
+        "-l"
+    ],
+    "python.autoComplete.extraPaths": [
+    
+    ]
+}
+

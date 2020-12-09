@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+    * {
+      box-sizing: border-box;
+    }
+    
+    #myInput {
+      background-image: url('/css/searchicon.png');
+      background-position: 10px 10px;
+      background-repeat: no-repeat;
+      width: 100%;
+      font-size: 16px;
+      padding: 12px 20px 12px 40px;
+      border: 1px solid #ddd;
+      margin-bottom: 12px;
+    }
+    
+    #myTable {
+      border-collapse: collapse;
+      width: 100%;
+      border: 1px solid #ddd;
+      font-size: 18px;
+    }
+    
+    #myTable th, #myTable td {
+      text-align: left;
+      padding: 12px;
+    }
+    
+    #myTable tr {
+      border-bottom: 1px solid #ddd;
+    }
+    
+    #myTable tr.header, #myTable tr:hover {
+      background-color: #f1f1f1;
+    }
+
+    body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.topnav {
+  overflow: hidden;
+  background-color: #333;
+}
+
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.topnav a.active {
+  background-color: #4CAF50;
+  color: white;
+}
+
+    </style>
+    </head>
+
+
+<body>
+
+    
+ <div class="topnav">
+  <a class="active"  href="/">Home</a>
+  {% if not isadmin %}
+  <a  href="/swaprequest">Section Swap</a>
+  {% endif %}
+  <a href="/logout">Logout</a> 
+</div>
+  
+
+<h1>Welcome  {{session['username']|safe}} !</h1> 
+
+
+<form action="/show" method="POST">
+ 
+  <select name="entity" id="entity">
+    <option {% if selected == 'courses' %} selected {% endif %} value="courses">courses</option>
+    <option {% if selected == 'sections' %} selected {% endif %} value="sections">sections</option>
+    <option {% if selected == 'lessons' %} selected {% endif %} value="lessons">lessons</option>
+    <option {% if selected == 'enrollments' %} selected {% endif %}  value="enrollments">enrollments</option>
+    <option {% if selected == 'credits' %} selected {% endif %} value="credits">credits</option>
+    <option {% if selected == 'students' %} selected {% endif %} value="students">students</option>
+    <option {% if selected == 'requests' %} selected {% endif %} value="requests">requests</option>
+    <option {% if selected == 'matches' %} selected {% endif %} value="matches">matches</option>
+  </select>
+  <label>filter:</label>
+  <input name="filter" type="text"  {% if  filter  %}  value="{{filter|safe}}" {% else %} placeholder="sql filer" {% endif %}  >
+  <input type="submit" value="Show">
+</form>
+
+
+{%  if   text %}
+
+<input type="text" id="myInput" onkeyup="FilterFunction()" placeholder="Search" title="Type in a name">
+
+<div class="output">
+  {{text|safe}}
+ </div>
+
+ {%  endif  %}
+
+ <div class="error">
+  {{error|safe}}
+ </div>
+
+
+ {%  if   matches %}
+ <p>Matches:</p>
+ <div class="pending">
+     {{matches|safe}}
+     <br>
+     <form action="/swap" method="POST">
+        <input type="submit" value="swap!">
+      </form>          
+ </div>
+
+ {%  endif  %}
+
+
+
+
+
+ <script>
+function FilterFunction() {
+  var input, filter, table, tr, td, i;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("myTable");
+  var rows = table.getElementsByTagName("tr");
+  for (i = 1; i < rows.length; i++) {
+    var cells = rows[i].getElementsByTagName("td");
+    var j;
+    var rowContainsFilter = false;
+    for (j = 0; j < cells.length; j++) {
+      if (cells[j]) {
+        if (cells[j].innerHTML.toUpperCase().indexOf(filter) > -1) {
+          rowContainsFilter = true;
+          break;
+        }
+      }
+    }
+
+    if (! rowContainsFilter) {
+      rows[i].style.display = "none";
+    } else {
+      rows[i].style.display = "";
+    }
+  }
+}
+  </script>
+  
+
+
+
+</body>
+</html>

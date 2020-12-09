@@ -11,7 +11,7 @@ app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 @app.route('/')
 def home():
     if not session.get('logged_in'):
-        return render_template('login3.html')
+        return render_template('login.html')
     else:
         return selectshow()
 
@@ -24,7 +24,7 @@ def do_login():
         session['password'] = request.form['password']
         return selectshow()
     except Exception as e:       
-        return render_template('login3.html',error=e)
+        return render_template('login.html',error=e)
 
 @app.route('/logout')
 def logout():

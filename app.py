@@ -24,7 +24,7 @@ def do_login():
         session['password'] = request.form['password']
         return selectshow()
     except Exception as e:       
-        return render_template('login2.html',error=e)
+        return render_template('login3.html',error=e)
 
 @app.route('/logout')
 def logout():
